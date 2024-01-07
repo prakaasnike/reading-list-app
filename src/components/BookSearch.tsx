@@ -121,9 +121,7 @@ export const BookSearch = () => {
 												status: "backlog",
 											})
 										}}
-										disabled={books.some((b) => {
-											b.key === book.key
-										})}
+										disabled={books.some((b) => b.key === book.key)}
 									>
 										Add
 									</Button>

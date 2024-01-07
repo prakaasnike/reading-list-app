@@ -1,4 +1,3 @@
-import { Book } from "./BookSearch"
 import {
 	Card,
 	CardDescription,
@@ -7,27 +6,26 @@ import {
 	CardTitle,
 } from "@/components/ui/card"
 import { Button } from "./ui/button"
+import { useStore, Book } from "@/store"
 
-export const BookList = ({
-	books,
-	onMoveBook,
-	onRemoveBook,
-}: {
-	books: Book[]
-	onMoveBook: (book: Book, targetList: Book["status"]) => void
-	onRemoveBook: (book: Book) => void
-}) => {
+export const BookList = () => {
+	const { books, removeBook, moveBook } = useStore((state) => state)
+
 	const moveToList = (book: Book, targetList: Book["status"]) => {
-		onMoveBook(book, targetList)
+		moveBook(book, targetList)
 	}
 
-	const renderBookItem = (book: Book, index: number, listType: string) => (
+	const renderBookItem = (
+		book: Book,
+		index: number,
+		listType: Book["status"],
+	) => (
 		<Card key={index}>
 			<CardHeader>
 				<CardTitle>{book.title}</CardTitle>
 				<CardDescription>{book.author_name}</CardDescription>
 				<CardFooter className="flex justify-between">
-					<Button variant="destructive" onClick={() => onRemoveBook(book)}>
+					<Button variant="destructive" onClick={() => removeBook(book)}>
 						Remove
 					</Button>
 					<div className="inline-flex gap-2 ">
@@ -59,8 +57,8 @@ export const BookList = ({
 	)
 
 	return (
-		<div className="p-4 space-y-8">
-			<h2 className="mb-4 font-bold text-exl">Reading List</h2>
+		<div className="space-y-8 p-4">
+			<h2 className="text-exl mb-4 font-bold">Reading List</h2>
 
 			{books.filter((book) => book.status === "inProgress").length > 0 && (
 				<>
