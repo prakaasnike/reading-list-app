@@ -6,7 +6,7 @@ import { useStore } from "./store"
 const App = () => {
 	const { loadBooksFromLocalStorage } = useStore((state) => state)
 	useEffect(() => {
-		loadBooksFromLocalStorage
+		loadBooksFromLocalStorage()
 	}, [loadBooksFromLocalStorage])
 
 	return (
