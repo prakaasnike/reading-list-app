@@ -90,47 +90,62 @@ export const BookSearch = () => {
 				)}
 			</div>
 			<div className="mt-4 max-h-64 overflow-auto">
-				<Table>
-					<TableHeader>
-						<TableRow>
-							<TableHead className="p-2">Title</TableHead>
-							<TableHead className="p-2">Author</TableHead>
-							<TableHead className="p-2">Year</TableHead>
-							<TableHead className="p-2">Page Count</TableHead>
-							<TableHead className="p-2"></TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{results.map((book, index) => (
-							<TableRow key={index}>
-								<TableCell>{book.title}</TableCell>
-								<TableCell>{book.author_name}</TableCell>
-								<TableCell>{book.first_publish_year}</TableCell>
-								<TableCell>{book.number_of_pages_median || "N/A"}</TableCell>
-								<TableCell>
-									<Button
-										variant="link"
-										onClick={() => {
-											addBook({
-												key: book.key,
-												title: book.title,
-												author_name: book.author_name,
-												first_publish_year: book.first_publish_year,
-												number_of_pages_median:
-													book.number_of_pages_median || null,
-												status: "backlog",
-											})
-										}}
-										disabled={books.some((b) => b.key === book.key)}
-									>
-										Add
-									</Button>
-								</TableCell>
+				{/* Conditional rendering using ternary operator */}
+				{query.length > 0 && results.length > 0 ? (
+					// Display table when both query and results are available
+					<Table>
+						<TableHeader>
+							<TableRow>
+								{/* Table headers */}
+								<TableHead className="p-2">Title</TableHead>
+								<TableHead className="p-2">Author</TableHead>
+								<TableHead className="p-2">Year</TableHead>
+								<TableHead className="p-2">Page Count</TableHead>
+								<TableHead className="p-2"></TableHead>
 							</TableRow>
-						))}
-					</TableBody>
-				</Table>
+						</TableHeader>
+						<TableBody>
+							{/* Mapping through results to display table rows */}
+							{results.map((book, index) => (
+								<TableRow key={index}>
+									{/* Displaying book information in table cells */}
+									<TableCell>{book.title}</TableCell>
+									<TableCell>{book.author_name}</TableCell>
+									<TableCell>{book.first_publish_year}</TableCell>
+									<TableCell>{book.number_of_pages_median || "N/A"}</TableCell>
+									<TableCell>
+										{/* Button to add book to the list */}
+										<Button
+											variant="link"
+											onClick={() => {
+												addBook({
+													key: book.key,
+													title: book.title,
+													author_name: book.author_name,
+													first_publish_year: book.first_publish_year,
+													number_of_pages_median:
+														book.number_of_pages_median || null,
+													status: "backlog",
+												})
+											}}
+											// Disable button if the book is already in the list
+											disabled={books.some((b) => b.key === book.key)}
+										>
+											Add
+										</Button>
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				) : (
+					// Display a message when there is no query or results
+					<div className="flex max-h-60 items-center justify-center p-16">
+						<p>Start Your Search</p>
+					</div>
+				)}
 			</div>
+
 			<div className="mt-4 flex items-center justify-between">
 				<Button
 					variant="outline"
